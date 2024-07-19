@@ -35,10 +35,11 @@ class AuthenticationMiddleware(MiddlewareMixin):
                 "'django.contrib.auth.middleware.AuthenticationMiddleware'."
             )
         request.user = SimpleLazyObject(lambda: get_user(request))
+        request.auser = partial(auser, request)
 
     async def aprocess_request(self, request):
         self.process_request(request)
-        request.auser = await auser(request)
+        request.auser = await request.auser()
 
 
 class LoginRequiredMiddleware(MiddlewareMixin):
