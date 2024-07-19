@@ -51,10 +51,12 @@ class TestAuthenticationMiddleware(TestCase):
             self.middleware(HttpRequest())
 
     async def test_auser(self):
+        # TODO: this method does not test the middleware's async functionality,
+        #  we need a separate test for that
         self.middleware(self.request)
-        auser = self.request.auser
+        auser = await self.request.auser()
         self.assertEqual(auser, self.user)
-        auser_second = self.request.auser
+        auser_second = await self.request.auser()
         self.assertIs(auser, auser_second)
 
 
